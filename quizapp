@@ -1,4 +1,16 @@
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test";
+$port = 3307;
+
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
 // Define questions and answers
 $questions = [
     [
@@ -38,9 +50,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $score++;
         }
     }
+    $username = isset($_POST['username']) ? trim($_POST['username']) : "Guest";
+
+
+    $stmt = $conn->prepare("INSERT INTO leaderboard (username, test_scores) VALUES (?, ?)");
+    $stmt->bind_param("si", $username, $score);
+    $stmt->execute();
+    $stmt->close();
+
     echo "<h2>Your Score: $score/" . count($questions) . "</h2>";
-    echo '<a href="quizapp.php">Try Again</a>';
+    echo '<a href="quizapp.php">Try Again</a><br><br>';
+    echo '<a href="leaderboard.php">View Leaderboard</a>';
     exit;
+
 }
 ?>
 
