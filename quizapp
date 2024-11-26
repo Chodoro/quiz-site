@@ -76,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <h1>PHP Quiz</h1>
     <form method="post" action="">
+        <label><input type = "text" name = "username">What is your name?</label>
         <?php foreach ($questions as $index => $question): ?>
             <fieldset>
                 <legend><?php echo $question['question']; ?></legend>
